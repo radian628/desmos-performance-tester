@@ -1,0 +1,10 @@
+{
+    "version": "0.1.0",
+    "name": "desmos-performance-tester",
+    "displayName": "Desmos Performance Tester",
+    "license": "MIT",
+    "dependencies": {
+        "puppeteer": "^19.2.2",
+        "typescript": "^4.9.3"
+    }
+}
