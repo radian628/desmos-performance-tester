@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+      "desmos-performance-tester": "file:../../module",
+      "puppeteer": "^19.2.2"
+  }
+}

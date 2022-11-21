@@ -21,7 +21,7 @@ export async function test(browser: puppeteer.Browser, test: DesmosTest) {
     if (sourceIsGraphState(test.source)) {
         injectionFile = injectionFile.replace(
             /\/\*CALCSTATE_START\*\/[\w\W]*\/\*CALCSTATE_END\*\//g,
-            `Calc.setState(JSON.parse(${test.source.graphState}))`
+            `Calc.setState(JSON.parse('${test.source.graphState.replace(/\\/g, "\\\\")}'))`
         );
     }
 
@@ -33,7 +33,7 @@ export async function test(browser: puppeteer.Browser, test: DesmosTest) {
         setTimeout(async () => {
             resolve({
                 name: test.name,
-                timeInWorker: await page.evaluate(() => {
+                ...await page.evaluate(() => {
                     //@ts-ignore
                     return window.getPerfInfo();
                 })

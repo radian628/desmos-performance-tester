@@ -13,7 +13,7 @@ export async function test(browser, test) {
     }
     let injectionFile = baseInjectionFile;
     if (sourceIsGraphState(test.source)) {
-        injectionFile = injectionFile.replace(/\/\*CALCSTATE_START\*\/[\w\W]*\/\*CALCSTATE_END\*\//g, `Calc.setState(JSON.parse(${test.source.graphState}))`);
+        injectionFile = injectionFile.replace(/\/\*CALCSTATE_START\*\/[\w\W]*\/\*CALCSTATE_END\*\//g, `Calc.setState(JSON.parse('${test.source.graphState.replace(/\\/g, "\\\\")}'))`);
     }
     await page.addScriptTag({
         content: injectionFile
@@ -22,7 +22,7 @@ export async function test(browser, test) {
         setTimeout(async () => {
             resolve({
                 name: test.name,
-                timeInWorker: await page.evaluate(() => {
+                ...await page.evaluate(() => {
                     //@ts-ignore
                     return window.getPerfInfo();
                 })

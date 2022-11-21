@@ -3,14 +3,18 @@
     /*CALCSTATE_END*/
  }
 
-const timingData = [];
+const timeInWorker = [];
+
+function mean(data) {
+  return data.reduce((prev, curr) => prev + curr, 0) / data.length;
+}
 
 function loop() {
   if (window.Calc) {
     setState();
     Calc.controller.dispatcher.register(evt => {
       if (evt.type != "on-evaluator-changes") return;
-      timingData.push(evt.timingData.timeInWorker);
+      timeInWorker.push(evt.timingData.timeInWorker);
     })
     return;
   }
@@ -20,5 +24,7 @@ function loop() {
 loop();
 
 function getPerfInfo() {
-  return timingData.reduce((prev, curr) => prev + curr, 0) / timingData.length;
+  return {
+    timeInWorker: mean(timeInWorker),
+  };
 }
